@@ -1,7 +1,6 @@
 import re
 import unicodedata
 
-from pydantic import BaseModel
 from textblob import TextBlob
 
 from src.settings.preprocessor import PreprocessorSettings
