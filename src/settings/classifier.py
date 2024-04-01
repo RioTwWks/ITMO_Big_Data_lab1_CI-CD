@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Sequence
+from typing import Any, List, Dict, Optional, Sequence, Union
 
 from src.settings.base import ExtraFieldsNotAllowedBaseModel
 
@@ -6,16 +6,8 @@ from src.settings.base import ExtraFieldsNotAllowedBaseModel
 class ClassifierSettings(ExtraFieldsNotAllowedBaseModel):
     n_estimators: int
     max_depth: Optional[int]
-
-
-class FitInput(ExtraFieldsNotAllowedBaseModel):
-    X: Sequence[str]
-    y: Sequence[Any]
-
-
-class PredictInput(ExtraFieldsNotAllowedBaseModel):
-    X: Sequence[str]
+    id2label: Dict[int, str]
 
 
 class PredictOutput(ExtraFieldsNotAllowedBaseModel):
-    predictions: Sequence[Any]
+    sentiment: Union[str, Sequence[str]]

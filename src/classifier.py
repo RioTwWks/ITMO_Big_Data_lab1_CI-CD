@@ -1,10 +1,12 @@
-from typing import Any, Sequence
+import os
+from os.path import join as opj
+from typing import Any, Sequence, Union
 
 from joblib import dump, load
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from src.settings.classifier import ClassifierSettings
+from src.settings.classifier import ClassifierSettings, PredictOutput
 
 
 class Classifier:
@@ -18,22 +20,34 @@ class Classifier:
                 max_depth=model_settings.max_depth,
             )
         )
+        self.id2label = model_settings.id2label
 
     def fit(self, X: Sequence[str], y: Sequence[Any]):
         X_transformed = self.vectorizer.fit_transform(X)
         self.model.fit(X_transformed, y)
 
-    def predict(self, X: Sequence[str]) -> Sequence[Any]:
+    def predict(self, X: Union[str, Sequence[str]]) -> PredictOutput:
+        if isinstance(X, str):
+            X = [X]
         X_transformed = self.vectorizer.transform(X)
-        predictions = self.model.predict(X_transformed)
-        return predictions
+        numeric_predictions = self.model.predict(X_transformed)
 
-    def save(self, model_path: str, vectorizer_path: str):
+        text_predictions = [self.id2label[id] for id in numeric_predictions]
+        if len(text_predictions) == 1:
+            return PredictOutput(sentiment=text_predictions[0])
+        return PredictOutput(sentiment=text_predictions)
+
+    def save(self, save_path: str):
+        os.makedirs(save_path, exist_ok=True)
+        model_path = opj(save_path, "model.joblib")
+        vectorizer_path = opj(save_path, "vectorizer.joblib")
         dump(self.model, model_path)
         dump(self.vectorizer, vectorizer_path)
 
     @classmethod
-    def load(cls, model_path: str, vectorizer_path: str, model_settings: ClassifierSettings):
+    def load(cls, load_path: str, model_settings: ClassifierSettings):
+        model_path = opj(load_path, "model.joblib")
+        vectorizer_path = opj(load_path, "vectorizer.joblib")
         model = load(model_path)
         vectorizer = load(vectorizer_path)
         return cls(model_settings=model_settings, vectorizer=vectorizer, model=model)

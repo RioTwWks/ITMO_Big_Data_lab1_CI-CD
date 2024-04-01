@@ -10,5 +10,9 @@ class Config(ExtraFieldsNotAllowedBaseModel):
 class ExperimentConfig(Config):
     exp_name: str
     log_path: str
-    model_save_path: str
-    vectorizer_save_path: str
+    save_path: str
+
+    train_x_csv_path: str
+    train_y_csv_path: str
+    test_x_csv_path: str
+    test_y_csv_path: str
