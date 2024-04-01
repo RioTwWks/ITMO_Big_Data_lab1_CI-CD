@@ -1,0 +1,10 @@
+exp_name: "Experiment 1"
+log_path: "./logs/exp_1.log"
+model_save_path: "./models/exp_1_model.joblib"
+vectorizer_save_path: "./vectorizers/exp_1_vectorizer.joblib"
+preprocessing_config:
+  use_normalization: true
+  use_lemmatization: true
+classifier_config:
+  n_estimators: 100
+  max_depth: null
