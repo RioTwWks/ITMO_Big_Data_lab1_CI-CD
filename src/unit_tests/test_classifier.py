@@ -8,9 +8,10 @@ from src.settings.classifier import ClassifierSettings
 
 @pytest.fixture(scope="module")
 def data():
-    categories = ['alt.atheism', 'soc.religion.christian']
-    newsgroups_train = fetch_20newsgroups(subset='test', categories=categories)
-    X_train, X_test, y_train, y_test = train_test_split(newsgroups_train.data, newsgroups_train.target, test_size=0.25, random_state=42)
+    X_train = ["This is about atheism", "This is about religion"]
+    y_train = [0, 1]
+    X_test = ["Religion topic", "Atheism topic"]
+    y_test = [1, 0]
     return X_train, X_test, y_train, y_test
 
 @pytest.fixture(scope="module")
