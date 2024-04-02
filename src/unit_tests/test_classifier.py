@@ -9,13 +9,13 @@ from src.settings.classifier import ClassifierSettings
 @pytest.fixture(scope="module")
 def data():
     categories = ['alt.atheism', 'soc.religion.christian']
-    newsgroups_train = fetch_20newsgroups(subset='train', categories=categories)
+    newsgroups_train = fetch_20newsgroups(subset='test', categories=categories)
     X_train, X_test, y_train, y_test = train_test_split(newsgroups_train.data, newsgroups_train.target, test_size=0.25, random_state=42)
     return X_train, X_test, y_train, y_test
 
 @pytest.fixture(scope="module")
 def classifier_settings():
-    return ClassifierSettings(n_estimators=10, max_depth=5, id2label={0: 'alt.atheism', 1: 'soc.religion.christian'})
+    return ClassifierSettings(n_estimators=2, max_depth=1, id2label={0: 'alt.atheism', 1: 'soc.religion.christian'})
 
 @pytest.fixture(scope="module")
 def trained_classifier(data, classifier_settings):
