@@ -37,7 +37,7 @@ async def index():
 
 
 @app.get("/classify/{message}", status_code=200, response_model=PredictOutput)
-async def classify_input(
+def classify_input(
     message: str = Path(..., description="The message to classify.")
 ) -> PredictOutput:
     try:
