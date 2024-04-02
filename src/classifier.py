@@ -1,3 +1,4 @@
+import json
 import os
 from os.path import join as opj
 from typing import Any, Sequence, Union
@@ -41,13 +42,34 @@ class Classifier:
         os.makedirs(save_path, exist_ok=True)
         model_path = opj(save_path, "model.joblib")
         vectorizer_path = opj(save_path, "vectorizer.joblib")
+        settings_path = opj(save_path, "settings.json")
+
         dump(self.model, model_path)
         dump(self.vectorizer, vectorizer_path)
+        with open(settings_path, 'w') as f:
+            json.dump({
+                "n_estimators": self.model.get_params()["n_estimators"],
+                "max_depth": self.model.get_params()["max_depth"],
+                "id2label": self.id2label
+            }, f)
 
     @classmethod
-    def load(cls, load_path: str, model_settings: ClassifierSettings):
+    def load(cls, load_path: str):
         model_path = opj(load_path, "model.joblib")
         vectorizer_path = opj(load_path, "vectorizer.joblib")
+        settings_path = opj(load_path, "settings.json")  # Путь к файлу настроек
+        
         model = load(model_path)
         vectorizer = load(vectorizer_path)
+        
+        # Загрузка настроек модели из JSON
+        with open(settings_path, 'r') as f:
+            settings = json.load(f)
+        
+        model_settings = ClassifierSettings(
+            n_estimators=settings["n_estimators"],
+            max_depth=settings["max_depth"],
+            id2label=settings["id2label"]
+        )
+        
         return cls(model_settings=model_settings, vectorizer=vectorizer, model=model)

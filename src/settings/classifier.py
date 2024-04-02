@@ -1,4 +1,4 @@
-from typing import Any, List, Dict, Optional, Sequence, Union
+from typing import Any, Dict, List, Optional, Sequence, Union
 
 from src.settings.base import ExtraFieldsNotAllowedBaseModel
 

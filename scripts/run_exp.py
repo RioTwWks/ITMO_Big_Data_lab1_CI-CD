@@ -7,8 +7,8 @@ from sklearn.metrics import classification_report
 
 from src.classifier import Classifier
 from src.preprocessor import Preprocessor
-from src.settings.config import ExperimentConfig
 from src.settings.classifier import PredictOutput
+from src.settings.config import ExperimentConfig
 from src.utils import load_experiment_config, read_exp_data
 
 

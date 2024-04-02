@@ -16,3 +16,6 @@ class ExperimentConfig(Config):
     train_y_csv_path: str
     test_x_csv_path: str
     test_y_csv_path: str
+
+class AppConfig(Config):
+    load_path: str
