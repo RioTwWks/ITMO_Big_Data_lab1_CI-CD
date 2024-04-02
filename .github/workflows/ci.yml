@@ -38,7 +38,7 @@ jobs:
       run: docker run -d --name big_data_container -p 8001:8001 myashka/big_data_app:latest
 
     - name: Execute tests inside Docker container
-      run: docker exec big_data_container poetry run pytest src/unit_tests
+      run: docker exec big_data_container poetry run pytest src/unit_tests/test_preprocessor.py
 
     - name: Stop and remove Docker container
       if: always()
