@@ -17,5 +17,6 @@ class ExperimentConfig(Config):
     test_x_csv_path: str
     test_y_csv_path: str
 
-class AppConfig(Config):
+class AppConfig(ExtraFieldsNotAllowedBaseModel):
+    preprocessing_config: PreprocessorSettings
     load_path: str

@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from src.classifier import Classifier
 from src.settings.classifier import ClassifierSettings
 
+
 @pytest.fixture(scope="module")
 def data():
     categories = ['alt.atheism', 'soc.religion.christian']
