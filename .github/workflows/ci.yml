@@ -24,7 +24,10 @@ jobs:
       with:
         push: true
         tags: myashka/big_data_app:latest
-  functional-tests:
+
+  pytest:
+    env:
+      MEMORY_LIMIT_MB: 2048
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
