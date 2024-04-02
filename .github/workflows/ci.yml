@@ -27,7 +27,7 @@ jobs:
 
   pytest:
     env:
-      MEMORY_LIMIT_MB: 2048
+      MEMORY_LIMIT_MB: 4096
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
