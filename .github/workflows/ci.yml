@@ -30,3 +30,21 @@ jobs:
     steps:
     - name: Run functional tests
       run: poetry run pytest src/unit_tests
+  functional-tests:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build Docker image
+      run: docker build -t mle-big_data_app:latest .
+
+    - name: Run Docker container
+      run: docker run -d --name big_data_container -p 8001:8001 big_data_app:latest
+
+    - name: Execute tests inside Docker container
+      run: docker exec big_data_container poetry run pytest src/unit_tests
+
+    - name: Stop and remove Docker container
+      if: always()
+      run: |
+        docker stop big_data_container
+        docker rm big_data_container
