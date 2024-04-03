@@ -1,0 +1,47 @@
+name: CI to DockerHub
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: myashka/big_data_app:latest
+
+  pytest:
+    env:
+      MEMORY_LIMIT_MB: 4096
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pull Docker image
+      run: docker pull myashka/big_data_app:latest
+
+    - name: Run Docker container (without starting FastAPI)
+      run: docker run -d --name big_data_container myashka/big_data_app:latest tail -f /dev/null
+
+    - name: Execute tests inside Docker container
+      run: docker exec big_data_container poetry run pytest src/unit_tests/
+
+    - name: Stop and remove Docker container
+      if: always()
+      run: |
+        docker stop big_data_container
+        docker rm big_data_container
