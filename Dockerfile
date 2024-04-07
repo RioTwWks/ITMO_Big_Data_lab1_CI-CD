@@ -26,6 +26,9 @@ RUN poetry run python -m textblob.download_corpora
 
 # Run your app
 COPY . /app
+
+RUN git lfs pull
+
 EXPOSE 8001
 
 ENV PYTHONPATH "${PYTHONPATH}:/app"
