@@ -23,6 +23,9 @@ jobs:
     - name: Execute tests inside Docker container
       run: docker exec big_data_container poetry run pytest src/unit_tests/
 
+    - name: Execute integration tests inside Docker container
+      run: docker exec big_data_container poetry run pytest tests/
+
     - name: Stop and remove Docker container
       if: always()
       run: |
