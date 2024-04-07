@@ -10,12 +10,8 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        lfs: true
-    
-    - name: Pull lfs
-      run: git lfs pull
+    - name: Checkout code
+      uses: nschloe/action-cached-lfs-checkout@v1
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -31,3 +27,4 @@ jobs:
       with:
         push: true
         tags: myashka/big_data_app:latest
+        no-cache: true
