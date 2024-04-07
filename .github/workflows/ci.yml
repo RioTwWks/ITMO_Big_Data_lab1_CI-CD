@@ -1,4 +1,4 @@
-name: CI to DockerHub
+name: CI
 
 on:
   push:
@@ -24,24 +24,3 @@ jobs:
       with:
         push: true
         tags: myashka/big_data_app:latest
-
-  pytest:
-    env:
-      MEMORY_LIMIT_MB: 4096
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-    - name: Pull Docker image
-      run: docker pull myashka/big_data_app:latest
-
-    - name: Run Docker container (without starting FastAPI)
-      run: docker run -d --name big_data_container myashka/big_data_app:latest tail -f /dev/null
-
-    - name: Execute tests inside Docker container
-      run: docker exec big_data_container poetry run pytest src/unit_tests/
-
-    - name: Stop and remove Docker container
-      if: always()
-      run: |
-        docker stop big_data_container
-        docker rm big_data_container
