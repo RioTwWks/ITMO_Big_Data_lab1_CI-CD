@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t riotwwks/riotwwks:latest .'
+        sh 'docker build -t riotwwks/rt-test:latest .'
       }
     }
     stage('Login') {
@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'docker push riotwwks/riotwwks:latest'
+        sh 'docker push riotwwks/rt-test:latest'
       }
     }
   }
